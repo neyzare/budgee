@@ -1,0 +1,19 @@
+.nav {
+  background-color: #1D2E44;
+  height: 100px;
+}
+
+.archive {
+  font-size: 28px;
+  margin-left: 34px;
+}
+
+.font-person {
+  font-size: 28px;
+  margin-right: 34px;
+}
+
+span {
+  font-size: 23px;
+  color: white ;
+}
