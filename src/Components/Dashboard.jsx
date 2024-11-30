@@ -9,16 +9,16 @@ import Cookies from "js-cookie";
 const Modal = ({ isOpen, onClose, onSave, data }) => {
   const [title, setTitle] = useState(data?.title || "");
   const [description, setDescription] = useState(data?.description || "");
-  const [transaction_date, setDate] = useState(data?.date || new Date().toISOString().substring(0, 10));
+  const [transaction_date, setDate] = useState(data?.transaction_date || new Date().toISOString().substring(0, 10));
   const [amount, setAmount] = useState(data?.amount || "");
   const handleSave = () => {
     const updatedData = { title, description, transaction_date, amount };
     onSave(updatedData);
-    const formattedDate = new Date(date).toISOString().split('T')[0]; // Format 'YYYY-MM-DD'
+    const formattedDate = new Date(transaction_date).toISOString().split('T')[0];
     const data = {
       title: title,
       description: description,
-      transaction_date: formattedDate,  // Utilisation de la date formatée
+      transaction_date: formattedDate,
       amount: parseFloat(amount),
     };
 
@@ -143,7 +143,9 @@ function Dashboard() {
           },
           withCredentials: true,
         });
-        const fetchedData = response.data.reduce((acc, item) => {
+        console.log("Réponse complète de l'API :", response);
+        console.log("Données reçues (response.data) :", response.data);
+        const fetchedData = response.data.data.reduce((acc, item) => {
           const cellKey = `${item.row}-${item.columns}`;
           acc[cellKey] = {
             title: item.title,
@@ -182,6 +184,7 @@ function Dashboard() {
                   <tr key={rowIndex}>
                     {columns.map((_, colIndex) => {
                       const cellKey = `${rowIndex}-${colIndex}`;
+                      console.log("Cellule en cours de rendu : ", cellKey, cellData[cellKey]);
                       const data = cellData[cellKey] || {};
                       return (
                           <td
